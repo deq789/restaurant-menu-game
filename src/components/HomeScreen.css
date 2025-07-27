@@ -1,0 +1,66 @@
+.menu-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 30px;
+}
+
+.menu-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.menu-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.menu-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.menu-card p {
+  color: #666;
+  line-height: 1.5;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .menu-options {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .menu-card {
+    padding: 20px;
+  }
+  
+  .menu-icon {
+    font-size: 2.5rem;
+  }
+} 
