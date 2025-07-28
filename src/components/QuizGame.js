@@ -10,24 +10,17 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
   const [showResult, setShowResult] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [totalQuestions] = useState(10);
+  const [currentCategory, setCurrentCategory] = useState('PARA PICAR');
 
-  const menuItems = menuData['Entrantes y aperitivos'];
+  const categories = Object.keys(menuData);
+  const menuItems = menuData[currentCategory] || [];
 
   useEffect(() => {
     generateQuestions();
-  }, []);
+  }, [currentCategory]);
 
   const generateQuestions = () => {
     const questionTypes = [
-      {
-        type: 'price',
-        generate: (item) => ({
-          question: `¿Cuál es el precio de "${item.name}"?`,
-          correctAnswer: item.price,
-          options: generatePriceOptions(item.price),
-          item: item
-        })
-      },
       {
         type: 'description',
         generate: (item) => ({
@@ -54,6 +47,33 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
           options: ['Sí', 'No'],
           item: item
         })
+      },
+      {
+        type: 'spicy',
+        generate: (item) => ({
+          question: `¿Es "${item.name}" un plato picante?`,
+          correctAnswer: item.spicy ? 'Sí' : 'No',
+          options: ['Sí', 'No'],
+          item: item
+        })
+      },
+      {
+        type: 'glutenFree',
+        generate: (item) => ({
+          question: `¿Es "${item.name}" libre de gluten?`,
+          correctAnswer: item.glutenFree ? 'Sí' : 'No',
+          options: ['Sí', 'No'],
+          item: item
+        })
+      },
+      {
+        type: 'ingredients',
+        generate: (item) => ({
+          question: `¿Qué ingrediente principal tiene "${item.name}"?`,
+          correctAnswer: getMainIngredient(item),
+          options: generateIngredientOptions(item),
+          item: item
+        })
       }
     ];
 
@@ -67,20 +87,6 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
     }
 
     setQuestions(generatedQuestions);
-  };
-
-  const generatePriceOptions = (correctPrice) => {
-    const prices = menuItems.map(item => item.price);
-    const options = [correctPrice];
-    
-    while (options.length < 4) {
-      const randomPrice = prices[Math.floor(Math.random() * prices.length)];
-      if (!options.includes(randomPrice)) {
-        options.push(randomPrice);
-      }
-    }
-    
-    return options.sort(() => Math.random() - 0.5);
   };
 
   const generateNameOptions = (correctName) => {
@@ -98,7 +104,7 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
   };
 
   const generateAllergenOptions = (item) => {
-    const allAllergens = ['gluten', 'frutos secos', 'lactosa', 'huevos'];
+    const allAllergens = ['gluten', 'dairy', 'fish', 'meat', 'poultry', 'pork', 'nuts', 'egg', 'shellfish'];
     const itemAllergens = item.allergens;
     const missingAllergen = allAllergens.find(allergen => !itemAllergens.includes(allergen));
     
@@ -106,8 +112,36 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
   };
 
   const getMissingAllergen = (item) => {
-    const allAllergens = ['gluten', 'frutos secos', 'lactosa', 'huevos'];
+    const allAllergens = ['gluten', 'dairy', 'fish', 'meat', 'poultry', 'pork', 'nuts', 'egg', 'shellfish'];
     return allAllergens.find(allergen => !item.allergens.includes(allergen));
+  };
+
+  const getMainIngredient = (item) => {
+    const description = item.description.toLowerCase();
+    const ingredients = ['pollo', 'ternera', 'cerdo', 'pescado', 'marisco', 'queso', 'pasta', 'pizza', 'ensalada', 'pollo', 'verduras', 'tomate', 'mozzarella', 'parmesano', 'jamón', 'salchichas', 'champiñones', 'berenjena', 'calabaza', 'trufa', 'chocolate', 'helado'];
+    
+    for (const ingredient of ingredients) {
+      if (description.includes(ingredient)) {
+        return ingredient.charAt(0).toUpperCase() + ingredient.slice(1);
+      }
+    }
+    
+    return 'Varios ingredientes';
+  };
+
+  const generateIngredientOptions = (item) => {
+    const mainIngredient = getMainIngredient(item);
+    const allIngredients = ['Pollo', 'Ternera', 'Cerdo', 'Pescado', 'Marisco', 'Queso', 'Pasta', 'Pizza', 'Ensalada', 'Verduras', 'Tomate', 'Mozzarella', 'Parmesano', 'Jamón', 'Salchichas', 'Champiñones', 'Berenjena', 'Calabaza', 'Trufa', 'Chocolate', 'Helado', 'Varios ingredientes'];
+    const options = [mainIngredient];
+    
+    while (options.length < 4) {
+      const randomIngredient = allIngredients[Math.floor(Math.random() * allIngredients.length)];
+      if (!options.includes(randomIngredient)) {
+        options.push(randomIngredient);
+      }
+    }
+    
+    return options.sort(() => Math.random() - 0.5);
   };
 
   const handleAnswerSelect = (answer) => {
@@ -143,6 +177,15 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
     generateQuestions();
   };
 
+  const handleCategoryChange = (event) => {
+    setCurrentCategory(event.target.value);
+    setCurrentQuestion(0);
+    setScore(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setGameCompleted(false);
+  };
+
   if (questions.length === 0) {
     return <div>Cargando...</div>;
   }
@@ -160,6 +203,22 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
           <span>Pregunta: {currentQuestion + 1}/{totalQuestions}</span>
           <span>Puntos: {score}</span>
         </div>
+      </div>
+
+      <div className="category-selector">
+        <label htmlFor="quiz-category-select">Categoría:</label>
+        <select 
+          id="quiz-category-select" 
+          value={currentCategory} 
+          onChange={handleCategoryChange}
+          className="category-select"
+        >
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
       </div>
 
       {gameCompleted ? (
@@ -208,6 +267,7 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
           <div className="quiz-instructions">
             <h4>📋 Instrucciones:</h4>
             <p>Responde las preguntas sobre los platos del menú. Cada respuesta correcta vale 10 puntos.</p>
+            <p>Tipos de preguntas: descripción, alérgenos, ingredientes, opciones vegetarianas y picantes.</p>
             <button className="btn btn-secondary" onClick={restartGame}>
               Reiniciar Quiz
             </button>

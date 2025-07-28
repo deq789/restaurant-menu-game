@@ -3,23 +3,35 @@ import { menuData } from '../data/menuData';
 import './StudyMode.css';
 
 const StudyMode = ({ onBack }) => {
-  const [currentCategory] = useState('Entrantes y aperitivos');
+  const [currentCategory, setCurrentCategory] = useState('PARA PICAR');
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   
-  const menuItems = menuData[currentCategory];
+  const categories = Object.keys(menuData);
+  const menuItems = menuData[currentCategory] || [];
 
   const nextItem = () => {
-    setCurrentItemIndex((prev) => (prev + 1) % menuItems.length);
+    if (menuItems.length > 0) {
+      setCurrentItemIndex((prev) => (prev + 1) % menuItems.length);
+    }
   };
 
   const prevItem = () => {
-    setCurrentItemIndex((prev) => (prev - 1 + menuItems.length) % menuItems.length);
+    if (menuItems.length > 0) {
+      setCurrentItemIndex((prev) => (prev - 1 + menuItems.length) % menuItems.length);
+    }
   };
 
-  const currentItem = menuItems[currentItemIndex];
+  const handleCategoryChange = (event) => {
+    setCurrentCategory(event.target.value);
+    setCurrentItemIndex(0); // Reset item index when category changes
+  };
+
+  const currentItem = menuItems[currentItemIndex] || menuItems[0] || null;
 
   const getAllergenIcons = (item) => {
     const icons = [];
+    
+    if (!item || !item.allergens) return icons;
     
     if (item.spicy) {
       icons.push(
@@ -37,7 +49,47 @@ const StudyMode = ({ onBack }) => {
       );
     }
     
-    if (item.allergens.includes('frutos secos')) {
+    if (item.allergens.includes('dairy')) {
+      icons.push(
+        <div key="dairy" className="allergen-icon dairy" title="Contiene lácteos">
+          🧀
+        </div>
+      );
+    }
+    
+    if (item.allergens.includes('fish')) {
+      icons.push(
+        <div key="fish" className="allergen-icon fish" title="Contiene pescado">
+          🐟
+        </div>
+      );
+    }
+    
+    if (item.allergens.includes('meat')) {
+      icons.push(
+        <div key="meat" className="allergen-icon meat" title="Contiene carne">
+          🥩
+        </div>
+      );
+    }
+    
+    if (item.allergens.includes('poultry')) {
+      icons.push(
+        <div key="poultry" className="allergen-icon poultry" title="Contiene pollo">
+          🍗
+        </div>
+      );
+    }
+    
+    if (item.allergens.includes('pork')) {
+      icons.push(
+        <div key="pork" className="allergen-icon pork" title="Contiene cerdo">
+          🐷
+        </div>
+      );
+    }
+    
+    if (item.allergens.includes('nuts')) {
       icons.push(
         <div key="nuts" className="allergen-icon nuts" title="Contiene frutos secos">
           🥜
@@ -51,10 +103,12 @@ const StudyMode = ({ onBack }) => {
           🌱
         </div>
       );
-    } else {
+    }
+    
+    if (item.glutenFree) {
       icons.push(
-        <div key="non-vegetarian" className="allergen-icon non-vegetarian" title="No vegetariano">
-          🥩
+        <div key="glutenFree" className="allergen-icon gluten-free" title="Sin gluten">
+          ✅
         </div>
       );
     }
@@ -70,25 +124,49 @@ const StudyMode = ({ onBack }) => {
         </button>
         <h2>📖 Modo Estudio - {currentCategory}</h2>
         <div className="progress">
-          {currentItemIndex + 1} de {menuItems.length}
+          {menuItems.length > 0 ? `${currentItemIndex + 1} de ${menuItems.length}` : '0 de 0'}
         </div>
       </div>
 
-      <div className="study-card">
-        <div className="item-image">
-          <img src={currentItem.image} alt={currentItem.name} />
-        </div>
-        
-        <div className="item-content">
-          <h3 className="item-name">{currentItem.name}</h3>
-          <p className="item-description">{currentItem.description}</p>
-          <div className="item-price">{currentItem.price}</div>
+      <div className="category-selector">
+        <label htmlFor="category-select">Seleccionar Categoría:</label>
+        <select 
+          id="category-select" 
+          value={currentCategory} 
+          onChange={handleCategoryChange}
+          className="category-select"
+        >
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {currentItem ? (
+        <div className="study-card">
+          <div className="item-image">
+            <img src={currentItem.image} alt={currentItem.name} />
+          </div>
           
-          <div className="allergen-icons">
-            {getAllergenIcons(currentItem)}
+          <div className="item-content">
+            <h3 className="item-name">{currentItem.name}</h3>
+            <p className="item-description">{currentItem.description}</p>
+            <div className="item-price">{currentItem.price}</div>
+            
+            <div className="allergen-icons">
+              {getAllergenIcons(currentItem)}
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="study-card">
+          <div className="item-content">
+            <h3>No hay elementos en esta categoría</h3>
+          </div>
+        </div>
+      )}
 
       <div className="study-controls">
         <button className="btn btn-secondary" onClick={prevItem}>
@@ -102,9 +180,10 @@ const StudyMode = ({ onBack }) => {
       <div className="study-tips">
         <h4>💡 Consejos para memorizar:</h4>
         <ul>
+          <li>Observa detenidamente la imagen del plato</li>
           <li>Lee el nombre y la descripción varias veces</li>
-          <li>Asocia el precio con algo que te ayude a recordarlo</li>
           <li>Presta atención a los alérgenos e iconos</li>
+          <li>Asocia los ingredientes con la imagen</li>
           <li>Practica con los otros modos de juego</li>
         </ul>
       </div>

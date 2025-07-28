@@ -10,15 +10,17 @@ const MemoryGame = ({ onBack, onScoreUpdate }) => {
   const [moves, setMoves] = useState(0);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState('PARA PICAR');
 
-  const menuItems = menuData['Entrantes y aperitivos'];
+  const categories = Object.keys(menuData);
+  const menuItems = menuData[currentCategory] || [];
 
   useEffect(() => {
     initializeGame();
-  }, []);
+  }, [currentCategory]);
 
   const initializeGame = () => {
-    // Create pairs of cards: dish names and prices
+    // Create pairs of cards: dish names and images
     const cardPairs = [];
     menuItems.forEach((item, index) => {
       cardPairs.push({
@@ -29,9 +31,9 @@ const MemoryGame = ({ onBack, onScoreUpdate }) => {
         item: item
       });
       cardPairs.push({
-        id: `price-${index}`,
-        type: 'price',
-        content: item.price,
+        id: `image-${index}`,
+        type: 'image',
+        content: item.image,
         pairId: index,
         item: item
       });
@@ -98,6 +100,10 @@ const MemoryGame = ({ onBack, onScoreUpdate }) => {
     return matchedPairs.includes(card.pairId);
   };
 
+  const handleCategoryChange = (event) => {
+    setCurrentCategory(event.target.value);
+  };
+
   return (
     <div className="memory-container">
       <div className="memory-header">
@@ -109,6 +115,22 @@ const MemoryGame = ({ onBack, onScoreUpdate }) => {
           <span>Puntos: {score}</span>
           <span>Movimientos: {moves}</span>
         </div>
+      </div>
+
+      <div className="category-selector">
+        <label htmlFor="memory-category-select">Categoría:</label>
+        <select 
+          id="memory-category-select" 
+          value={currentCategory} 
+          onChange={handleCategoryChange}
+          className="category-select"
+        >
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
       </div>
 
       {gameCompleted && (
@@ -142,7 +164,9 @@ const MemoryGame = ({ onBack, onScoreUpdate }) => {
                   {card.type === 'name' ? (
                     <div className="dish-name">{card.content}</div>
                   ) : (
-                    <div className="dish-price">{card.content}</div>
+                    <div className="dish-image">
+                      <img src={card.content} alt={card.item.name} />
+                    </div>
                   )}
                 </div>
               </div>
@@ -153,7 +177,7 @@ const MemoryGame = ({ onBack, onScoreUpdate }) => {
 
       <div className="game-instructions">
         <h4>📋 Instrucciones:</h4>
-        <p>Encuentra las parejas de platos y precios. Haz clic en las tarjetas para voltearlas.</p>
+        <p>Encuentra las parejas de nombres de platos e imágenes. Haz clic en las tarjetas para voltearlas.</p>
         <button className="btn btn-secondary" onClick={initializeGame}>
           Reiniciar Juego
         </button>

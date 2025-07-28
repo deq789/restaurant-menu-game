@@ -24,13 +24,13 @@ const HomeScreen = ({ onNavigate, score, highScore }) => {
         <div className="menu-card" onClick={() => onNavigate('memory')}>
           <div className="menu-icon">🎯</div>
           <h3>Juego de Memoria</h3>
-          <p>Encuentra las parejas de platos y precios</p>
+          <p>Encuentra las parejas de nombres e imágenes de platos</p>
         </div>
 
         <div className="menu-card" onClick={() => onNavigate('quiz')}>
           <div className="menu-icon">❓</div>
           <h3>Quiz Rápido</h3>
-          <p>Responde preguntas sobre los platos</p>
+          <p>Responde preguntas sobre ingredientes y características</p>
         </div>
       </div>
 
