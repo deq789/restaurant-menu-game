@@ -31,15 +31,6 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
         })
       },
       {
-        type: 'allergens',
-        generate: (item) => ({
-          question: `¿Cuál de estos alérgenos NO contiene "${item.name}"?`,
-          correctAnswer: getMissingAllergen(item),
-          options: generateAllergenOptions(item),
-          item: item
-        })
-      },
-      {
         type: 'vegetarian',
         generate: (item) => ({
           question: `¿Es "${item.name}" un plato vegetariano?`,
@@ -101,19 +92,6 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
     }
     
     return options.sort(() => Math.random() - 0.5);
-  };
-
-  const generateAllergenOptions = (item) => {
-    const allAllergens = ['gluten', 'dairy', 'fish', 'meat', 'poultry', 'pork', 'nuts', 'egg', 'shellfish'];
-    const itemAllergens = item.allergens;
-    const missingAllergen = allAllergens.find(allergen => !itemAllergens.includes(allergen));
-    
-    return [missingAllergen, ...itemAllergens].sort(() => Math.random() - 0.5);
-  };
-
-  const getMissingAllergen = (item) => {
-    const allAllergens = ['gluten', 'dairy', 'fish', 'meat', 'poultry', 'pork', 'nuts', 'egg', 'shellfish'];
-    return allAllergens.find(allergen => !item.allergens.includes(allergen));
   };
 
   const getMainIngredient = (item) => {
@@ -267,7 +245,7 @@ const QuizGame = ({ onBack, onScoreUpdate }) => {
           <div className="quiz-instructions">
             <h4>📋 Instrucciones:</h4>
             <p>Responde las preguntas sobre los platos del menú. Cada respuesta correcta vale 10 puntos.</p>
-            <p>Tipos de preguntas: descripción, alérgenos, ingredientes, opciones vegetarianas y picantes.</p>
+            <p>Tipos de preguntas: descripción, ingredientes, opciones vegetarianas, picantes y sin gluten.</p>
             <button className="btn btn-secondary" onClick={restartGame}>
               Reiniciar Quiz
             </button>
