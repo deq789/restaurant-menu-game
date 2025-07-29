@@ -4,6 +4,7 @@ import HomeScreen from './components/HomeScreen';
 import MemoryGame from './components/MemoryGame';
 import StudyMode from './components/StudyMode';
 import QuizGame from './components/QuizGame';
+import CompositionGame from './components/CompositionGame';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
@@ -28,6 +29,8 @@ function App() {
         return <StudyMode onBack={() => setCurrentScreen('home')} />;
       case 'quiz':
         return <QuizGame onBack={() => setCurrentScreen('home')} onScoreUpdate={updateScore} />;
+      case 'composition':
+        return <CompositionGame onNavigate={setCurrentScreen} onScoreUpdate={updateScore} />;
       default:
         return (
           <HomeScreen 

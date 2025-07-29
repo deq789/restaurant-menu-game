@@ -32,6 +32,12 @@ const HomeScreen = ({ onNavigate, score, highScore }) => {
           <h3>Quiz Rápido</h3>
           <p>Responde preguntas sobre ingredientes y características</p>
         </div>
+
+        <div className="menu-card" onClick={() => onNavigate('composition')}>
+          <div className="menu-icon">🧪</div>
+          <h3>Composición de Platos</h3>
+          <p>Identifica qué ingredientes contiene cada plato</p>
+        </div>
       </div>
 
       <div className="footer">
