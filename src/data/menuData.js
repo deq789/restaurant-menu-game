@@ -485,8 +485,8 @@ export const menuData = {
     {
       id: 1,
       name: "ACEITUNAS SICILIANAS",
-      description: "Aceitunas sicilianas marinadas",
-      price: "3.50€",
+      description: "Aceitunas verdes",
+      price: "2.80€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/99",
       spicy: false,
       vegetarian: true,
@@ -496,7 +496,7 @@ export const menuData = {
       id: 2,
       name: "PAN DE AJO Y MOZZARELLA",
       description: "Tosta con salsa de ajo, mozzarella y orégano",
-      price: "3.50€",
+      price: "1.80€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/93",
       spicy: false,
       vegetarian: true,
@@ -505,8 +505,8 @@ export const menuData = {
     {
       id: 3,
       name: "PATATAS FRITAS",
-      description: "Patatas fritas crujientes",
-      price: "3.20€",
+      description: "Ración con una salsa a elegir: mayonesa, kétchup o salsa brava",
+      price: "2.80€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/94",
       spicy: false,
       vegetarian: true,
@@ -515,18 +515,18 @@ export const menuData = {
     {
       id: 4,
       name: "PATATAS GAUCHAS",
-      description: "Patatas con salsa gaucha",
-      price: "4.20€",
+      description: "Ración de patatas fritas con bacon crujiente y salsa chillimayo picante",
+      price: "5.20€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/98",
       spicy: true,
-      vegetarian: true,
+      vegetarian: false,
       glutenFree: true
     },
     {
       id: 5,
       name: "MINI CHORIPÁN",
-      description: "Mini choripán con salsa criolla",
-      price: "4.50€",
+      description: "Tosta de chorizo criollo, guindilla y chimichurri (aderezo argentino)",
+      price: "3.20€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/100",
       spicy: true,
       vegetarian: false,
@@ -535,8 +535,8 @@ export const menuData = {
     {
       id: 6,
       name: "MONTANARA",
-      description: "Masa frita con salsa de tomate y mozzarella",
-      price: "4.20€",
+      description: "Mini pizza frita con salsa de tomate, rúcula y parmesano",
+      price: "3.00€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/101",
       spicy: false,
       vegetarian: true,
@@ -545,42 +545,32 @@ export const menuData = {
     {
       id: 7,
       name: "MONTANARA DE STRACCIATELLA",
-      description: "Masa frita con stracciatella y albahaca",
-      price: "4.50€",
+      description: "Mini pizza frita con queso stracciatella, mortadella de Bolonia, pesto de pistachos y albahaca",
+      price: "4.80€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/102",
       spicy: false,
-      vegetarian: true,
+      vegetarian: false,
       glutenFree: false
     },
     {
       id: 8,
       name: "MONTANARA AL RAGÚ",
-      description: "Masa frita con ragú de carne",
-      price: "5.50€",
+      description: "Mini pizza frita con salsa boloñesa y queso parmesano",
+      price: "4.80€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/1583",
-      spicy: true,
-      vegetarian: false,
-      glutenFree: false
-    },
-    {
-      id: 9,
-      name: "MONTANARA DI BUFFALA",
-      description: "Masa frita con mozzarella de búfala",
-      price: "5.50€",
-      image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/1218",
       spicy: false,
-      vegetarian: true,
+      vegetarian: false,
       glutenFree: false
     },
     {
       id: 10,
       name: "MOZZARELLA DI BÚFALA",
-      description: "Mozzarella de búfala campana DOP",
-      price: "8.50€",
+      description: "Mozzarella de búfala campana (125 gr) acompañada de jamón crudo italiano, aceitunas verdes, mortadella de Bolonia y focaccia",
+      price: "12.50€",
       image: "https://smartmenu.agorapos.com/api/digital-menu/gltxa0yb/image/product/1219",
       spicy: false,
-      vegetarian: true,
-      glutenFree: true
+      vegetarian: false,
+      glutenFree: false
     }
   ],
   "EMPANADILLAS ARGENTINAS": [
